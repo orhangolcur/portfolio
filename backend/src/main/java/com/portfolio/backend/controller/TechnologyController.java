@@ -3,6 +3,7 @@ package com.portfolio.backend.controller;
 import com.portfolio.backend.dto.technology.TechnologyRequest;
 import com.portfolio.backend.dto.technology.TechnologyResponse;
 import com.portfolio.backend.service.TechnologyService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -30,14 +31,14 @@ public class TechnologyController {
     }
 
     @PostMapping("/admin/technologies")
-    public ResponseEntity<TechnologyResponse> create(@RequestBody TechnologyRequest request) {
+    public ResponseEntity<TechnologyResponse> create(@Valid @RequestBody TechnologyRequest request) {
         return ResponseEntity.status(201).body(technologyService.create(request));
     }
 
     @PutMapping("/admin/technologies/{id}")
     public ResponseEntity<TechnologyResponse> update(
             @PathVariable UUID id,
-            @RequestBody TechnologyRequest request) {
+            @Valid @RequestBody TechnologyRequest request) {
         return ResponseEntity.ok(technologyService.update(id, request));
     }
 
