@@ -9,6 +9,6 @@ import com.portfolio.backend.entity.Certificate;
 
 @Repository
 public interface CertificateRepository extends JpaRepository<Certificate, UUID> {
-    @Query("SELECT c FROM Certificate c JOIN FETCH c.translations")
+    @Query("SELECT c FROM Certificate c LEFT JOIN FETCH c.translations")
     List<Certificate> findAllWithTranslations();
 }

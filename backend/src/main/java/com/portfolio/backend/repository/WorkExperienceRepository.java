@@ -10,6 +10,6 @@ import com.portfolio.backend.entity.WorkExperience;
 @Repository
 public interface WorkExperienceRepository extends JpaRepository<WorkExperience, UUID> {
 
-    @Query("SELECT w FROM WorkExperience w JOIN FETCH w.translations ORDER BY w.startDate DESC")
+    @Query("SELECT w FROM WorkExperience w LEFT JOIN FETCH w.translations ORDER BY w.startDate DESC")
     List<WorkExperience> findAllWithTranslations();
 }
