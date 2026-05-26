@@ -1,6 +1,7 @@
 package com.portfolio.backend.service.rules;
 
 import com.portfolio.backend.entity.AboutMe;
+import com.portfolio.backend.exception.ResourceNotFoundException;
 import com.portfolio.backend.repository.AboutMeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ public class AboutMeBusinessRules {
     // AboutMe kaydı yoksa hata fırlat
     public AboutMe getAboutMeOrThrow() {
         return aboutMeRepository.findWithTranslations()
-                .orElseThrow(() -> new RuntimeException("About me not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("About me not found."));
     }
 
     // AboutMe kaydı yoksa yeni oluştur
