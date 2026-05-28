@@ -3,9 +3,9 @@ package com.portfolio.backend.service.rules;
 import com.portfolio.backend.entity.Technology;
 import com.portfolio.backend.exception.ResourceNotFoundException;
 import com.portfolio.backend.repository.TechnologyRepository;
-import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TechnologyBusinessRules {
@@ -23,6 +23,12 @@ public class TechnologyBusinessRules {
     public Technology getByIdOrThrow(UUID id) {
         return technologyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Technology not found."));
+    }
+
+    public void checkExistsOrThrow(UUID id) {
+        if (!technologyRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Technology not found.");
+        }
     }
 
     public List<Technology> getByIds(List<UUID> ids) {

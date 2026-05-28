@@ -16,7 +16,7 @@ public interface CertificateRepository extends JpaRepository<Certificate, UUID> 
     List<Certificate> findAllWithTranslations();
 
     @Query("SELECT c FROM Certificate c LEFT JOIN FETCH c.translations WHERE c.id = :id")
-    Optional<Certificate> findByIdWithTranslations(UUID id);
+    Optional<Certificate> findByIdWithTranslations(@Param("id") UUID id);
 
     @Query("SELECT COUNT(c) > 0 FROM Certificate c JOIN c.translations t WHERE t.locale = 'tr' AND t.title = :title")
     boolean existsByTrTitle(@Param("title") String title);

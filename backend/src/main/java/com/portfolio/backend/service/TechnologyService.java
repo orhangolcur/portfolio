@@ -56,7 +56,7 @@ public class TechnologyService {
 
     @Transactional
     public void delete(UUID id) {
-        technologyBusinessRules.getByIdOrThrow(id);
+        technologyBusinessRules.checkExistsOrThrow(id);
         technologyRepository.deleteById(id);
     }
 }

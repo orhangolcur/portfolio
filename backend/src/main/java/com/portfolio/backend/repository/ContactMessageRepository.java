@@ -10,5 +10,6 @@ import java.util.UUID;
 public interface ContactMessageRepository extends JpaRepository<ContactMessage, UUID> {
 
     // Admin panelde okunmamış mesajları listele
+    List<ContactMessage> findAllByOrderByCreatedAtDesc();
     List<ContactMessage> findByIsReadFalseOrderByCreatedAtDesc();
 }

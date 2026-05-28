@@ -19,7 +19,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     List<Project> findFeaturedWithTranslations();
 
     @Query("SELECT p FROM Project p LEFT JOIN FETCH p.translations LEFT JOIN FETCH p.technologies WHERE p.id = :id")
-    Optional<Project> findByIdWithTranslationsAndTechnologies(UUID id);
+    Optional<Project> findByIdWithTranslationsAndTechnologies(@Param("id") UUID id);
 
     @Query("SELECT COUNT(p) > 0 FROM Project p JOIN p.translations t WHERE t.locale = 'tr' AND t.title = :title")
     boolean existsByTrTitle(@Param("title") String title);
