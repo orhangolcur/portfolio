@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ProjectMapper { 
+public class ProjectMapper {
 
     private final TechnologyMapper technologyMapper;
 
@@ -18,19 +18,16 @@ public class ProjectMapper {
         this.technologyMapper = technologyMapper;
     }
 
-    // Entity + locale → Response
-    public ProjectResponse toResponse(Project project, String locale) {
-        Optional<ProjectTranslation> translation = project.getTranslations().stream()
-                .filter(t -> t.getLocale().equals(locale))
-                .findFirst();
-
-        String title = translation.map(ProjectTranslation::getTitle).orElse("");
-        String description = translation.map(ProjectTranslation::getDescription).orElse("");
+    public ProjectResponse toResponse(Project project) {
+        Optional<ProjectTranslation> tr = getTranslation(project, "tr");
+        Optional<ProjectTranslation> en = getTranslation(project, "en");
 
         return ProjectResponse.builder()
                 .id(project.getId())
-                .title(title)
-                .description(description)
+                .titleTr(tr.map(ProjectTranslation::getTitle).orElse(""))
+                .titleEn(en.map(ProjectTranslation::getTitle).orElse(""))
+                .descriptionTr(tr.map(ProjectTranslation::getDescription).orElse(""))
+                .descriptionEn(en.map(ProjectTranslation::getDescription).orElse(""))
                 .githubUrl(project.getGithubUrl())
                 .liveUrl(project.getLiveUrl())
                 .imageUrl(project.getImageUrl())
@@ -40,14 +37,12 @@ public class ProjectMapper {
                 .build();
     }
 
-    // Entity listesi + locale → Response listesi
-    public List<ProjectResponse> toResponseList(List<Project> projects, String locale) {
+    public List<ProjectResponse> toResponseList(List<Project> projects) {
         return projects.stream()
-                .map(project -> toResponse(project, locale))
+                .map(this::toResponse)
                 .toList();
     }
 
-    // Request → yeni Entity
     public Project toEntity(ProjectRequest request, List<Technology> technologies) {
         Project project = Project.builder()
                 .githubUrl(request.getGithubUrl())
@@ -57,46 +52,39 @@ public class ProjectMapper {
                 .displayOrder(request.getDisplayOrder())
                 .build();
 
-        // Çevirileri ekle
-        ProjectTranslation trTranslation = ProjectTranslation.builder()
-                .project(project)
-                .locale("tr")
-                .title(request.getTitleTr())
-                .description(request.getDescriptionTr())
-                .build();
+        project.getTranslations().add(ProjectTranslation.builder()
+                .project(project).locale("tr")
+                .title(request.getTitleTr()).description(request.getDescriptionTr())
+                .build());
 
-        ProjectTranslation enTranslation = ProjectTranslation.builder()
-                .project(project)
-                .locale("en")
-                .title(request.getTitleEn())
-                .description(request.getDescriptionEn())
-                .build();
+        project.getTranslations().add(ProjectTranslation.builder()
+                .project(project).locale("en")
+                .title(request.getTitleEn()).description(request.getDescriptionEn())
+                .build());
 
-        project.getTranslations().add(trTranslation);
-        project.getTranslations().add(enTranslation);
         project.getTechnologies().addAll(technologies);
 
         return project;
     }
 
-    // Mevcut entity'yi güncelle
     public void updateTranslation(Project project, String locale, String title, String description) {
         project.getTranslations().stream()
                 .filter(t -> t.getLocale().equals(locale))
                 .findFirst()
                 .ifPresentOrElse(
-                        t -> {
-                            t.setTitle(title);
-                            t.setDescription(description);
-                        },
+                        t -> { t.setTitle(title); t.setDescription(description); },
                         () -> project.getTranslations().add(
                                 ProjectTranslation.builder()
-                                        .project(project)
-                                        .locale(locale)
-                                        .title(title)
-                                        .description(description)
+                                        .project(project).locale(locale)
+                                        .title(title).description(description)
                                         .build()
                         )
                 );
+    }
+
+    private Optional<ProjectTranslation> getTranslation(Project project, String locale) {
+        return project.getTranslations().stream()
+                .filter(t -> t.getLocale().equals(locale))
+                .findFirst();
     }
 }

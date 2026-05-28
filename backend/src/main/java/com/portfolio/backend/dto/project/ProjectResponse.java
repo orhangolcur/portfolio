@@ -14,8 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProjectResponse {
     private UUID id;
-    private String title;
-    private String description;
+    private String titleTr;
+    private String titleEn;
+    private String descriptionTr;
+    private String descriptionEn;
     private String githubUrl;
     private String liveUrl;
     private String imageUrl;

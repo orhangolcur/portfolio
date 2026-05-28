@@ -30,34 +30,30 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectResponse> getAll(String locale) {
-        List<Project> projects = projectBusinessRules.getAllWithTranslations();
-        return projectMapper.toResponseList(projects, locale);
+    public List<ProjectResponse> getAll() {
+        return projectMapper.toResponseList(projectBusinessRules.getAllWithTranslations());
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectResponse> getFeatured(String locale) {
-        List<Project> projects = projectBusinessRules.getFeaturedWithTranslations();
-        return projectMapper.toResponseList(projects, locale);
+    public List<ProjectResponse> getFeatured() {
+        return projectMapper.toResponseList(projectBusinessRules.getFeaturedWithTranslations());
     }
 
     @Transactional(readOnly = true)
-    public ProjectResponse getById(UUID id, String locale) {
-        Project project = projectBusinessRules.getByIdOrThrow(id);
-        return projectMapper.toResponse(project, locale);
+    public ProjectResponse getById(UUID id) {
+        return projectMapper.toResponse(projectBusinessRules.getByIdOrThrow(id));
     }
 
     @Transactional
-    public ProjectResponse create(ProjectRequest request, String locale) {
+    public ProjectResponse create(ProjectRequest request) {
         projectBusinessRules.checkDuplicateTitleOrThrow(request.getTitleTr());
         List<Technology> technologies = projectBusinessRules.getTechnologiesByIds(request.getTechnologyIds());
-        Project project = projectMapper.toEntity(request, technologies);
-        Project saved = projectRepository.save(project);
-        return projectMapper.toResponse(saved, locale);
+        Project saved = projectRepository.save(projectMapper.toEntity(request, technologies));
+        return projectMapper.toResponse(saved);
     }
 
     @Transactional
-    public ProjectResponse update(UUID id, ProjectRequest request, String locale) {
+    public ProjectResponse update(UUID id, ProjectRequest request) {
         Project project = projectBusinessRules.getByIdOrThrow(id);
         projectBusinessRules.checkDuplicateTitleExcludingOrThrow(request.getTitleTr(), id);
         List<Technology> technologies = projectBusinessRules.getTechnologiesByIds(request.getTechnologyIds());
@@ -74,8 +70,7 @@ public class ProjectService {
         project.getTechnologies().clear();
         project.getTechnologies().addAll(technologies);
 
-        Project saved = projectRepository.save(project);
-        return projectMapper.toResponse(saved, locale);
+        return projectMapper.toResponse(projectRepository.save(project));
     }
 
     @Transactional

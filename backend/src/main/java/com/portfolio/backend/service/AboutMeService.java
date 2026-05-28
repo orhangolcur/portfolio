@@ -17,8 +17,8 @@ public class AboutMeService {
     private final AboutMeMapper aboutMeMapper;
 
     public AboutMeService(
-        AboutMeRepository aboutMeRepository, 
-        AboutMeBusinessRules aboutMeBusinessRules, 
+        AboutMeRepository aboutMeRepository,
+        AboutMeBusinessRules aboutMeBusinessRules,
         AboutMeMapper aboutMeMapper
     ) {
         this.aboutMeRepository = aboutMeRepository;
@@ -26,14 +26,11 @@ public class AboutMeService {
         this.aboutMeMapper = aboutMeMapper;
     }
 
-    // Herkese açık — locale'e göre biyografi döner
     @Transactional(readOnly = true)
-    public AboutMeResponse getAboutMe(String locale) {
-        AboutMe aboutMe = aboutMeBusinessRules.getAboutMeOrThrow();
-        return aboutMeMapper.toResponse(aboutMe, locale);
+    public AboutMeResponse getAboutMe() {
+        return aboutMeMapper.toResponse(aboutMeBusinessRules.getAboutMeOrThrow());
     }
 
-    // Sadece admin — bilgileri günceller
     @Transactional
     public void updateAboutMe(AboutMeRequest request) {
         AboutMe aboutMe = aboutMeBusinessRules.getOrCreate();
@@ -46,7 +43,6 @@ public class AboutMeService {
         aboutMeRepository.save(aboutMe);
     }
 
-    // Çeviri varsa güncelle, yoksa yeni ekle
     private void updateTranslation(AboutMe aboutMe, String locale, String bio) {
         aboutMe.getTranslations().stream()
                 .filter(t -> t.getLocale().equals(locale))

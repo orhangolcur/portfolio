@@ -9,17 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AboutMeMapper {
 
-    // Entity + locale → Response
-    public AboutMeResponse toResponse(AboutMe aboutMe, String locale) {
-        // istenilen dile ait bio'yu bul
-        String bio = aboutMe.getTranslations().stream()
-                .filter(t -> t.getLocale().equals(locale))
-                .findFirst()
-                .map(AboutMeTranslation::getBio)
-                .orElse("");
-
+    public AboutMeResponse toResponse(AboutMe aboutMe) {
         return AboutMeResponse.builder()
-                .bio(bio)
+                .bioTr(getBioByLocale(aboutMe, "tr"))
+                .bioEn(getBioByLocale(aboutMe, "en"))
                 .profileImageUrl(aboutMe.getProfileImageUrl())
                 .githubUrl(aboutMe.getGithubUrl())
                 .linkedinUrl(aboutMe.getLinkedinUrl())
@@ -27,8 +20,6 @@ public class AboutMeMapper {
                 .build();
     }
 
-    // Request → Translation entity
-    // yeni çeviri kaydı oluşturulurken kullanılır
     public AboutMeTranslation toTranslation(AboutMe aboutMe, String locale, String bio) {
         return AboutMeTranslation.builder()
                 .aboutMe(aboutMe)
@@ -42,5 +33,13 @@ public class AboutMeMapper {
         aboutMe.setGithubUrl(request.getGithubUrl());
         aboutMe.setLinkedinUrl(request.getLinkedinUrl());
         aboutMe.setCvUrl(request.getCvUrl());
+    }
+
+    private String getBioByLocale(AboutMe aboutMe, String locale) {
+        return aboutMe.getTranslations().stream()
+                .filter(t -> t.getLocale().equals(locale))
+                .findFirst()
+                .map(AboutMeTranslation::getBio)
+                .orElse("");
     }
 }

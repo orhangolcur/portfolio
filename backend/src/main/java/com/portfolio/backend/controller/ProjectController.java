@@ -21,37 +21,30 @@ public class ProjectController {
     }
 
     @GetMapping("/projects")
-    public ResponseEntity<List<ProjectResponse>> getAll(
-            @RequestParam(defaultValue = "tr") String locale) {
-        return ResponseEntity.ok(projectService.getAll(locale));
+    public ResponseEntity<List<ProjectResponse>> getAll() {
+        return ResponseEntity.ok(projectService.getAll());
     }
 
     @GetMapping("/projects/featured")
-    public ResponseEntity<List<ProjectResponse>> getFeatured(
-            @RequestParam(defaultValue = "tr") String locale) {
-        return ResponseEntity.ok(projectService.getFeatured(locale));
+    public ResponseEntity<List<ProjectResponse>> getFeatured() {
+        return ResponseEntity.ok(projectService.getFeatured());
     }
 
     @GetMapping("/projects/{id}")
-    public ResponseEntity<ProjectResponse> getById(
-            @PathVariable UUID id,
-            @RequestParam(defaultValue = "tr") String locale) {
-        return ResponseEntity.ok(projectService.getById(id, locale));
+    public ResponseEntity<ProjectResponse> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(projectService.getById(id));
     }
 
     @PostMapping("/admin/projects")
-    public ResponseEntity<ProjectResponse> create(
-            @Valid @RequestBody ProjectRequest request,
-            @RequestParam(defaultValue = "tr") String locale) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(projectService.create(request, locale));
+    public ResponseEntity<ProjectResponse> create(@Valid @RequestBody ProjectRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(projectService.create(request));
     }
 
     @PutMapping("/admin/projects/{id}")
     public ResponseEntity<ProjectResponse> update(
             @PathVariable UUID id,
-            @Valid @RequestBody ProjectRequest request,
-            @RequestParam(defaultValue = "tr") String locale) {
-        return ResponseEntity.ok(projectService.update(id, request, locale));
+            @Valid @RequestBody ProjectRequest request) {
+        return ResponseEntity.ok(projectService.update(id, request));
     }
 
     @DeleteMapping("/admin/projects/{id}")

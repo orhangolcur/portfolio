@@ -17,8 +17,8 @@ public class TechnologyRequest {
     @Size(max = 100, message = "Technology name must be less than 100 characters.")
     private String name;
 
-    @Size(max = 500, message = "Icon URL must be less than 500 characters.")
     @URL(message = "Icon URL must be a valid URL.")
+    @Size(min = 1, max = 500, message = "Icon URL must be less than 500 characters.")
     private String iconUrl;
 
     @Size(max = 100, message = "Category must be less than 100 characters.")

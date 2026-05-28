@@ -22,18 +22,18 @@ public class AboutMeRequest {
     private String bioEn;
 
     @URL(message = "Profile image URL must be a valid URL.")
-    @Size(max = 500, message = "Profile image URL must be less than 500 characters.")
+    @Size(min = 1, max = 500, message = "Profile image URL must be less than 500 characters.")
     private String profileImageUrl;
 
     @URL(message = "GitHub URL must be a valid URL.")
-    @Size(max = 500, message = "GitHub URL must be less than 500 characters.")
+    @Size(min = 1, max = 500, message = "GitHub URL must be less than 500 characters.")
     private String githubUrl;
 
     @URL(message = "LinkedIn URL must be a valid URL.")
-    @Size(max = 500, message = "LinkedIn URL must be less than 500 characters.")
+    @Size(min = 1, max = 500, message = "LinkedIn URL must be less than 500 characters.")
     private String linkedinUrl;
 
     @URL(message = "CV URL must be a valid URL.")
-    @Size(max = 500, message = "CV URL must be less than 500 characters.")
+    @Size(min = 1, max = 500, message = "CV URL must be less than 500 characters.")
     private String cvUrl;
 }

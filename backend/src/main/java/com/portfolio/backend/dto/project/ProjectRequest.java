@@ -36,15 +36,15 @@ public class ProjectRequest {
     private String descriptionEn;
 
     @URL(message = "GitHub URL must be a valid URL.")
-    @Size(max = 500, message = "GitHub URL must be less than 500 characters.")
+    @Size(min = 1, max = 500, message = "GitHub URL must be less than 500 characters.")
     private String githubUrl;
 
     @URL(message = "Live site URL must be a valid URL.")
-    @Size(max = 500, message = "Live site URL must be less than 500 characters.")
+    @Size(min = 1, max = 500, message = "Live site URL must be less than 500 characters.")
     private String liveUrl;
 
     @URL(message = "Image URL must be a valid URL.")
-    @Size(max = 500, message = "Image URL must be less than 500 characters.")
+    @Size(min = 1, max = 500, message = "Image URL must be less than 500 characters.")
     private String imageUrl;
 
     private boolean featured;

@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AboutMeResponse {
-    private String bio; // o anki dilde biyografi
+    private String bioTr;
+    private String bioEn;
     private String profileImageUrl;
     private String githubUrl;
     private String linkedinUrl;
