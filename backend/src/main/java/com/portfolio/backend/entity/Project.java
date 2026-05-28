@@ -2,7 +2,9 @@ package com.portfolio.backend.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
 import jakarta.persistence.CascadeType;
@@ -74,7 +76,7 @@ public class Project {
         inverseJoinColumns = @JoinColumn(name = "technology_id")
     )
     @Builder.Default
-    private List<Technology> technologies = new ArrayList<>();
+    private Set<Technology> technologies = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {

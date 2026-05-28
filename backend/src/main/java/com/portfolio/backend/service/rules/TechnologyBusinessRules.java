@@ -24,4 +24,13 @@ public class TechnologyBusinessRules {
         return technologyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Technology not found."));
     }
+
+    public List<Technology> getByIds(List<UUID> ids) {
+        List<UUID> distinctIds = ids.stream().distinct().toList();
+        List<Technology> found = technologyRepository.findAllById(distinctIds);
+        if (found.size() != distinctIds.size()) {
+            throw new ResourceNotFoundException("One or more technologies not found.");
+        }
+        return found;
+    }
 }

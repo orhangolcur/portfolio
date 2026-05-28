@@ -4,6 +4,7 @@ import com.portfolio.backend.dto.technology.TechnologyRequest;
 import com.portfolio.backend.dto.technology.TechnologyResponse;
 import com.portfolio.backend.entity.Technology;
 import org.springframework.stereotype.Component;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -18,7 +19,7 @@ public class TechnologyMapper {
                 .build();
     }
 
-    public List<TechnologyResponse> toResponseList(List<Technology> technologies) {
+    public List<TechnologyResponse> toResponseList(Collection<Technology> technologies) {
         return technologies.stream()
                 .map(this::toResponse)
                 .toList();
